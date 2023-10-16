@@ -145,6 +145,7 @@ JWTOption<Name, Schema>) => {
 
             if (nbf) jwt = jwt.setNotBefore(nbf)
             if (exp) jwt = jwt.setExpirationTime(exp)
+            if (morePayload.exp) jwt = jwt.setExpirationTime(morePayload.exp)
 
             return jwt.sign(key)
         },
