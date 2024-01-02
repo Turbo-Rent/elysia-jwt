@@ -18,21 +18,19 @@ export interface JWTOption<Name extends string | undefined = 'jwt', Schema exten
     nbf?: string | number;
     exp?: string | number;
 }
-export declare const jwt: <Name extends string = "jwt", Schema extends TSchema | undefined = undefined>({ name, secret, alg, crit, schema, nbf, exp, ...payload }: JWTOption<Name, Schema>) => Elysia<"", {
+export declare const jwt: <const Name extends string = "jwt", const Schema extends TSchema | undefined = undefined>({ name, secret, alg, crit, schema, nbf, exp, ...payload }: JWTOption<Name, Schema>) => Elysia<"", {
+    request: { [name in Name extends string ? Name : "jwt"]: {
+        readonly sign: (morePayload: UnwrapSchema<Schema, Record<string, string | number>> & JWTPayloadSpec) => Promise<string>;
+        readonly verify: (jwt?: string) => Promise<false | (UnwrapSchema<Schema, Record<string, string | number>> & JWTPayloadSpec)>;
+    }; } extends infer T ? { [K in keyof T]: { [name in Name extends string ? Name : "jwt"]: {
+        readonly sign: (morePayload: UnwrapSchema<Schema, Record<string, string | number>> & JWTPayloadSpec) => Promise<string>;
+        readonly verify: (jwt?: string) => Promise<false | (UnwrapSchema<Schema, Record<string, string | number>> & JWTPayloadSpec)>;
+    }; }[K]; } : never;
     store: {};
+    derive: {};
+    resolve: {};
+}, {
+    type: {};
     error: {};
-    request: Record<Name extends string ? Name : "jwt", {
-        readonly sign: (morePayload: UnwrapSchema<Schema, Record<string, string>> & JWTPayloadSpec) => Promise<string>;
-        readonly verify: (jwt?: string) => Promise<false | (UnwrapSchema<Schema, Record<string, string>> & JWTPayloadSpec)>;
-    }> extends infer T extends Object ? { [key in keyof T]: Record<Name extends string ? Name : "jwt", {
-        readonly sign: (morePayload: UnwrapSchema<Schema, Record<string, string>> & JWTPayloadSpec) => Promise<string>;
-        readonly verify: (jwt?: string) => Promise<false | (UnwrapSchema<Schema, Record<string, string>> & JWTPayloadSpec)>;
-    }>[key]; } : never;
-    schema: {};
-    meta: {
-        schema: {};
-        defs: {};
-        exposed: {};
-    };
-}>;
+}, {}, {}, {}, false>;
 export default jwt;
